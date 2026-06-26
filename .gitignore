@@ -360,4 +360,7 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
+FodyWeavers.xsdResources/Raw/gemini_api_key.txt
+*.env
+.env
+secrets.json

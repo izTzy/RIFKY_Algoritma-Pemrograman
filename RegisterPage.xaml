@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KAMERA.RegisterPage"
+             Shell.NavBarIsVisible="False">
+    <Grid>
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#070B22" Offset="0"/>
+                    <GradientStop Color="#111B46" Offset="0.45"/>
+                    <GradientStop Color="#4F46E5" Offset="1"/>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <Ellipse Fill="#38BDF8" Opacity="0.18" WidthRequest="340" HeightRequest="340" HorizontalOptions="Start" VerticalOptions="Start" Margin="-150,-140,0,0"/>
+        <Ellipse Fill="#A855F7" Opacity="0.16" WidthRequest="380" HeightRequest="380" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,-160,-150"/>
+
+        <ScrollView>
+            <Grid Padding="28" RowDefinitions="Auto" ColumnDefinitions="*,480" ColumnSpacing="34" VerticalOptions="Center">
+                <VerticalStackLayout Grid.Column="0" Spacing="22" VerticalOptions="Center">
+                    <Frame BackgroundColor="#10FFFFFF" BorderColor="#26FFFFFF" CornerRadius="34" Padding="28" HasShadow="False">
+                        <VerticalStackLayout Spacing="18">
+                            <Label Text="🧠 StrokeAI" FontSize="42" FontAttributes="Bold" TextColor="White"/>
+                            <Label Text="Registrasi Biometrik" FontSize="22" FontAttributes="Bold" TextColor="#DDE7FF"/>
+                            <Label Text="Daftarkan akun dan foto wajah sebagai kunci akses sistem. Tampilan ini memakai palet yang sama dengan halaman login agar pengalaman pengguna konsisten." FontSize="14" TextColor="#AFC4FF"/>
+                            <Frame WidthRequest="280" HeightRequest="280" CornerRadius="140" Padding="18" HorizontalOptions="Center" BackgroundColor="#0B102C" BorderColor="#4F8BFF" HasShadow="True">
+                                <Grid>
+                                    <Ellipse Stroke="#38BDF8" StrokeThickness="3" Opacity="0.8"/>
+                                    <Ellipse Stroke="#8B5CF6" StrokeThickness="10" Opacity="0.18" Margin="24"/>
+                                    <Ellipse Stroke="#22C55E" StrokeThickness="2" Opacity="0.45" Margin="48"/>
+                                    <Label Text="REGISTER\nFACE ID" TextColor="#E0F2FE" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                                </Grid>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <Frame Grid.Column="1" BackgroundColor="#F8FAFC" CornerRadius="30" Padding="0" HasShadow="True" BorderColor="#E2E8F0" HorizontalOptions="Fill" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="0">
+                        <Grid Padding="26,24" BackgroundColor="#FFFFFF" ColumnDefinitions="Auto,*">
+                            <Frame WidthRequest="54" HeightRequest="54" CornerRadius="18" Padding="0" BackgroundColor="#EEF2FF" BorderColor="#C7D2FE">
+                                <Label Text="🧠" FontSize="28" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </Frame>
+                            <VerticalStackLayout Grid.Column="1" Margin="14,0,0,0" VerticalOptions="Center" Spacing="2">
+                                <Label Text="StrokeAI" FontSize="24" FontAttributes="Bold" TextColor="#0F172A"/>
+                                <Label Text="Daftar akun biometrik baru" FontSize="13" TextColor="#64748B"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <VerticalStackLayout Padding="26" Spacing="14">
+                            <Label Text="Pilih Hak Akses" FontSize="13" TextColor="#64748B"/>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <Frame x:Name="RegFramePublik" Grid.Column="0" BackgroundColor="#4F46E5" CornerRadius="18" Padding="14" HasShadow="False" BorderColor="Transparent">
+                                    <Frame.GestureRecognizers><TapGestureRecognizer Tapped="OnRegRolePublikSelected"/></Frame.GestureRecognizers>
+                                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                        <Label Text="👤" FontSize="26" HorizontalOptions="Center"/>
+                                        <Label Text="Publik" FontSize="14" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                                        <Label Text="Screening" FontSize="11" TextColor="#E0E7FF" HorizontalOptions="Center"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                                <Frame x:Name="RegFrameAdmin" Grid.Column="1" BackgroundColor="#F1F5F9" CornerRadius="18" Padding="14" HasShadow="False" BorderColor="#CBD5E1">
+                                    <Frame.GestureRecognizers><TapGestureRecognizer Tapped="OnRegRoleAdminSelected"/></Frame.GestureRecognizers>
+                                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                        <Label Text="🛡️" FontSize="26" HorizontalOptions="Center"/>
+                                        <Label Text="Admin" FontSize="14" FontAttributes="Bold" TextColor="#475569" HorizontalOptions="Center"/>
+                                        <Label Text="Database" FontSize="11" TextColor="#64748B" HorizontalOptions="Center"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </Grid>
+
+                            <Label Text="Username" FontSize="12" TextColor="#475569"/>
+                            <Frame BackgroundColor="#F8FAFC" CornerRadius="16" Padding="0" BorderColor="#E2E8F0" HeightRequest="54" HasShadow="False">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label Text="👤" FontSize="18" Margin="16,0,8,0" VerticalOptions="Center"/>
+                                    <Entry x:Name="EntryUsername" Grid.Column="1" Placeholder="Buat username" PlaceholderColor="#94A3B8" TextColor="#0F172A" BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Frame>
+
+                            <Label Text="Password" FontSize="12" TextColor="#475569"/>
+                            <Frame BackgroundColor="#F8FAFC" CornerRadius="16" Padding="0" BorderColor="#E2E8F0" HeightRequest="54" HasShadow="False">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label Text="🔒" FontSize="18" Margin="16,0,8,0" VerticalOptions="Center"/>
+                                    <Entry x:Name="EntryPassword" Grid.Column="1" Placeholder="Buat password" PlaceholderColor="#94A3B8" IsPassword="True" TextColor="#0F172A" BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Frame>
+
+                            <Frame BackgroundColor="#FFFFFF" CornerRadius="20" Padding="16" BorderColor="#E2E8F0" HasShadow="False">
+                                <VerticalStackLayout Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout>
+                                            <Label Text="Face Recognition" FontAttributes="Bold" TextColor="#0F172A"/>
+                                            <Label Text="Ambil foto wajah untuk pembanding login." FontSize="12" TextColor="#64748B"/>
+                                        </VerticalStackLayout>
+                                        <Label Text="🔐" Grid.Column="1" FontSize="28"/>
+                                    </Grid>
+
+                                    <Frame x:Name="CameraFrame" BackgroundColor="#0B102C" CornerRadius="18" Padding="0" BorderColor="#4F8BFF" HeightRequest="210" IsClippedToBounds="True">
+                                        <Grid>
+                                            <VerticalStackLayout x:Name="CameraPlaceholder" VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                                                <Label Text="📷" FontSize="46" HorizontalOptions="Center"/>
+                                                <Label Text="Belum ada foto wajah" FontSize="13" TextColor="#CBD5E1" HorizontalOptions="Center"/>
+                                                <Label Text="Tekan tombol ambil foto" FontSize="11" TextColor="#94A3B8" HorizontalOptions="Center"/>
+                                            </VerticalStackLayout>
+                                            <Image x:Name="CameraPreview" Aspect="AspectFill" IsVisible="False"/>
+                                            <Frame WidthRequest="150" HeightRequest="150" CornerRadius="75" Padding="0" BackgroundColor="Transparent" BorderColor="#38BDF8" Opacity="0.55" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        </Grid>
+                                    </Frame>
+
+                                    <Label x:Name="LabelPhotoStatus" Text="✅ Foto wajah berhasil diambil" FontSize="12" TextColor="#10B981" HorizontalOptions="Center" IsVisible="False"/>
+                                    <Button Text="📷  Ambil Foto Wajah" FontAttributes="Bold" CornerRadius="16" HeightRequest="52" TextColor="White" BackgroundColor="#4F46E5" Clicked="OnCaptureFaceClicked"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <Button Text="Daftar Sekarang" FontAttributes="Bold" FontSize="15" CornerRadius="18" HeightRequest="56" TextColor="White" BackgroundColor="#4F46E5" Clicked="OnRegisterClicked"/>
+                            <Button Text="Update Wajah Akun Ini" FontAttributes="Bold" FontSize="14" CornerRadius="18" HeightRequest="52" TextColor="#4F46E5" BackgroundColor="#EEF2FF" Clicked="OnUpdateExistingFaceClicked"/>
+                            <Label Text="Gunakan update wajah jika username sudah ada dan hanya ingin mengganti foto/template biometrik." TextColor="#64748B" FontSize="11" HorizontalTextAlignment="Center"/>
+                            <Button Text="← Kembali ke Login" BackgroundColor="Transparent" TextColor="#4F46E5" FontSize="13" Clicked="OnBackToLoginClicked"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>
