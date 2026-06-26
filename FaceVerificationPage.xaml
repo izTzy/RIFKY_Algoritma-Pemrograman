@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KAMERA.FaceVerificationPage"
+             Shell.NavBarIsVisible="False">
+    <Grid>
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#070B22" Offset="0"/>
+                    <GradientStop Color="#111B46" Offset="0.5"/>
+                    <GradientStop Color="#312E81" Offset="1"/>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <ScrollView>
+            <VerticalStackLayout Padding="28" Spacing="18" HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="Biometric Face Verification" FontSize="30" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                <Label x:Name="LabelRole" Text="Verifikasi Identitas" FontSize="14" TextColor="#CBD5E1" HorizontalOptions="Center"/>
+                <Frame CornerRadius="32" Padding="18" BackgroundColor="#10FFFFFF" BorderColor="#3B82F6" HasShadow="True">
+                    <Grid HeightRequest="360" WidthRequest="460">
+                        <Image x:Name="CameraPreview" Aspect="AspectFill"/>
+                        <BoxView BackgroundColor="#33000000"/>
+                        <Ellipse Stroke="#38BDF8" StrokeThickness="4" WidthRequest="250" HeightRequest="250" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Ellipse Stroke="#A78BFA" StrokeThickness="12" Opacity="0.18" WidthRequest="300" HeightRequest="300" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <BoxView HeightRequest="3" WidthRequest="320" BackgroundColor="#38BDF8" Opacity="0.85" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Label Text="Arahkan wajah ke area scan" TextColor="#E0F2FE" FontSize="14" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,22"/>
+                    </Grid>
+                </Frame>
+                <Label x:Name="LabelStatus" Text="Sistem akan membandingkan wajah live dengan data biometrik yang tersimpan." TextColor="#AFC4FF" FontSize="13" HorizontalTextAlignment="Center"/>
+                <Label x:Name="LabelSimilarity" Text="Status: menunggu scan" TextColor="#E0F2FE" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <ActivityIndicator x:Name="ScanIndicator" IsVisible="False" IsRunning="False" Color="#38BDF8"/>
+                <Button Text="Mulai Verifikasi Wajah" FontAttributes="Bold" BackgroundColor="#4F46E5" TextColor="White" CornerRadius="18" HeightRequest="56" Clicked="OnStartScanClicked"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" WidthRequest="460">
+                    <Button Text="Update Wajah" FontAttributes="Bold" BackgroundColor="#EEF2FF" TextColor="#4F46E5" CornerRadius="18" HeightRequest="50" Clicked="OnUpdateFaceClicked"/>
+                    <Button Grid.Column="1" Text="Lokasi Data" FontAttributes="Bold" BackgroundColor="#172554" TextColor="#BFDBFE" CornerRadius="18" HeightRequest="50" Clicked="OnShowFacePathClicked"/>
+                </Grid>
+                <Button x:Name="BtnLanjut" Text="Akses diterima — Masuk Dashboard" IsVisible="False" FontAttributes="Bold" BackgroundColor="#10B981" TextColor="White" CornerRadius="18" HeightRequest="52" Clicked="OnNextClicked"/>
+                <Button Text="Kembali ke Login" BackgroundColor="Transparent" TextColor="#FCA5A5" Clicked="OnCancelClicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

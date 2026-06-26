@@ -1,0 +1,5 @@
+username,role,sample_id,photo_path,template_path,quality_score,source
+andi,Publik,1,Faces/andi_sample_001.png,Faces/andi_sample_001_embedding.json,CONTOH_ONLY,sample-generated
+andi,Publik,2,Faces/andi_sample_002.png,Faces/andi_sample_002_embedding.json,CONTOH_ONLY,sample-generated
+budi,Admin,1,Faces/budi_sample_001.png,Faces/budi_sample_001_embedding.json,CONTOH_ONLY,sample-generated
+budi,Admin,2,Faces/budi_sample_002.png,Faces/budi_sample_002_embedding.json,CONTOH_ONLY,sample-generated

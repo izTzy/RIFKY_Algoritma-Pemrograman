@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KAMERA.MainDashboardPage"
+             Shell.NavBarIsVisible="False">
+
+    <Grid x:Name="RootGrid" BackgroundColor="#F5F7FB" ColumnDefinitions="260,*">
+        <!-- SIDEBAR -->
+        <Frame x:Name="SidebarFrame" Grid.Column="0" CornerRadius="0" Padding="22" BackgroundColor="White" BorderColor="#EEF2F7" HasShadow="False">
+            <VerticalStackLayout Spacing="18">
+                <Label Text="🧠 StrokeAI" FontSize="24" FontAttributes="Bold" TextColor="#0F172A"/>
+                <Label x:Name="LabelRoleBadge" Text="Dashboard" FontSize="12" TextColor="#64748B"/>
+                <BoxView HeightRequest="1" BackgroundColor="#E2E8F0"/>
+
+                <Button x:Name="BtnMenuDashboard"
+                        Text="Dashboard"
+                        Clicked="OnMenuDashboardClicked"
+                        BackgroundColor="#EEF2FF"
+                        TextColor="#4F46E5"
+                        HorizontalOptions="Fill"
+                        CornerRadius="14"/>
+
+                <Button x:Name="BtnHistory"
+                        Text="Riwayat Screening"
+                        Clicked="OnMenuHistoryClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#334155"
+                        HorizontalOptions="Fill"
+                        CornerRadius="14"/>
+
+                <Button x:Name="BtnDatabase"
+                        Text="DataBase Akun &amp; Foto"
+                        Clicked="OnMenuDatabaseClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#334155"
+                        HorizontalOptions="Fill"
+                        CornerRadius="14"/>
+
+                <Button x:Name="BtnMenuChat"
+                        Text="NLP Assistant"
+                        Clicked="OnMenuChatClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#334155"
+                        HorizontalOptions="Fill"
+                        CornerRadius="14"/>
+
+                <Button Text="Logout"
+                        BackgroundColor="#EEF2FF"
+                        TextColor="#4F46E5"
+                        CornerRadius="14"
+                        Clicked="OnLogoutClicked"
+                        Margin="0,34,0,0"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- MAIN AREA + FLOATING CHAT -->
+        <Grid Grid.Column="1">
+            <ScrollView>
+                <VerticalStackLayout Padding="28" Spacing="18">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="4">
+                            <Label x:Name="LabelWelcome" Text="Selamat datang" FontSize="30" FontAttributes="Bold" TextColor="#0F172A"/>
+                            <Label Text="Sistem Prediksi Stroke otomatis berbasis Hybrid AI" FontSize="14" TextColor="#64748B"/>
+                        </VerticalStackLayout>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10" HorizontalOptions="End">
+                            <Frame BackgroundColor="White" CornerRadius="18" Padding="14" BorderColor="#E2E8F0" HasShadow="False">
+                                <Label x:Name="LabelRealtimeDate" Text="📅  Memuat waktu..." TextColor="#334155" FontSize="13"/>
+                            </Frame>
+                            <Button x:Name="BtnPublicLogout"
+                                    Text="Logout"
+                                    Clicked="OnLogoutClicked"
+                                    BackgroundColor="#FEE2E2"
+                                    TextColor="#EF4444"
+                                    CornerRadius="16"
+                                    Padding="18,0"
+                                    IsVisible="False"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+
+                    <!-- DASHBOARD ADMIN -->
+                    <VerticalStackLayout x:Name="DashboardPanel" Spacing="18">
+                        <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="14">
+                            <Frame BackgroundColor="White" CornerRadius="22" Padding="18" BorderColor="#E2E8F0">
+                                <VerticalStackLayout>
+                                    <Label Text="Total Screening" TextColor="#64748B"/>
+                                    <Label x:Name="LabelTotal" Text="0" FontSize="30" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="📈 Data tersimpan" TextColor="#10B981" FontSize="12"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="22" Padding="18" BorderColor="#E2E8F0">
+                                <VerticalStackLayout>
+                                    <Label Text="Akurasi Model" TextColor="#64748B"/>
+                                    <Label Text="89.3%" FontSize="30" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="DT / NN / Fuzzy" TextColor="#10B981" FontSize="12"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <Frame Grid.Column="2" BackgroundColor="White" CornerRadius="22" Padding="18" BorderColor="#E2E8F0">
+                                <VerticalStackLayout>
+                                    <Label Text="Risiko Tinggi" TextColor="#64748B"/>
+                                    <Label x:Name="LabelHighRisk" Text="0" FontSize="30" FontAttributes="Bold" TextColor="#EF4444"/>
+                                    <Label Text="Butuh perhatian" TextColor="#EF4444" FontSize="12"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                            <Frame Grid.Column="3" BackgroundColor="White" CornerRadius="22" Padding="18" BorderColor="#E2E8F0">
+                                <VerticalStackLayout>
+                                    <Label Text="NLP Chatbot" TextColor="#64748B"/>
+                                    <Label Text="Aktif" FontSize="30" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="Konsultasi cepat" TextColor="#4F46E5" FontSize="12"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="1.25*,0.75*" ColumnSpacing="16">
+                            <Frame BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0" HasShadow="False">
+                                <VerticalStackLayout Spacing="14">
+                                    <Label Text="Ringkasan Sistem" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label x:Name="LabelDashboardHistory" Text="Belum ada riwayat screening." TextColor="#64748B" FontSize="13"/>
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                        <Frame BackgroundColor="#EEF2FF" CornerRadius="18" Padding="16" BorderColor="#C7D2FE" HasShadow="False">
+                                            <VerticalStackLayout Spacing="6">
+                                                <Label Text="Database Akun" TextColor="#4F46E5" FontAttributes="Bold"/>
+                                                <Label Text="Kelola akun, role, dan file wajah pengguna terdaftar." TextColor="#475569" FontSize="12"/>
+                                                <Button Text="Buka Database" Clicked="OnMenuDatabaseClicked" BackgroundColor="#4F46E5" TextColor="White" CornerRadius="14"/>
+                                            </VerticalStackLayout>
+                                        </Frame>
+                                        <Frame Grid.Column="1" BackgroundColor="#F0FDF4" CornerRadius="18" Padding="16" BorderColor="#BBF7D0" HasShadow="False">
+                                            <VerticalStackLayout Spacing="6">
+                                                <Label Text="Riwayat Screening" TextColor="#16A34A" FontAttributes="Bold"/>
+                                                <Label Text="Pantau hasil screening publik yang tersimpan di perangkat." TextColor="#475569" FontSize="12"/>
+                                                <Button Text="Lihat Riwayat" Clicked="OnMenuHistoryClicked" BackgroundColor="#16A34A" TextColor="White" CornerRadius="14"/>
+                                            </VerticalStackLayout>
+                                        </Frame>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0" HasShadow="False">
+                                <VerticalStackLayout Spacing="12">
+                                    <Label Text="Insight Risiko" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Frame BackgroundColor="#FEF2F2" BorderColor="#FECACA" CornerRadius="18" Padding="18" HasShadow="False">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="Rasio Risiko Tinggi" TextColor="#991B1B" FontSize="13"/>
+                                            <Label x:Name="LabelRiskRatio" Text="0%" FontSize="34" FontAttributes="Bold" TextColor="#EF4444"/>
+                                            <Label Text="Dihitung dari semua riwayat screening." TextColor="#7F1D1D" FontSize="11"/>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                    <Label Text="Prioritas Admin" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="• Pastikan foto wajah user tersimpan
+• Cek riwayat risiko tinggi
+• Reset foto jika verifikasi gagal" TextColor="#64748B" FontSize="13"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <!-- PUBLIC PREDICTION -->
+                    <Frame x:Name="PublicPanel" BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0">
+                        <VerticalStackLayout Spacing="18">
+
+                            <!-- Header -->
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Input Pasien" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                                <Label Text="Pilih salah satu cara: tulis bebas seperti cerita biasa, atau isi form terarah agar parameter lebih lengkap." TextColor="#64748B" FontSize="13"/>
+                            </VerticalStackLayout>
+
+                            <!-- TAB BUTTONS -->
+                            <Frame x:Name="TabBarFrame" BackgroundColor="#F1F5F9" CornerRadius="16" Padding="4" BorderColor="Transparent" HasShadow="False">
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="0">
+                                    <!-- Tab 1 Active Indicator (white pill) -->
+                                    <Frame x:Name="TabIndicator1"
+                                           BackgroundColor="White"
+                                           CornerRadius="12"
+                                           Padding="0"
+                                           BorderColor="#C7D2FE"
+                                           HasShadow="False"
+                                           Grid.Column="0"
+                                           IsVisible="True"/>
+                                    <Frame x:Name="TabIndicator2"
+                                           BackgroundColor="White"
+                                           CornerRadius="12"
+                                           Padding="0"
+                                           BorderColor="#A7F3D0"
+                                           HasShadow="False"
+                                           Grid.Column="1"
+                                           IsVisible="False"/>
+
+                                    <!-- Tab Labels on top -->
+                                    <Button x:Name="BtnTab1"
+                                            Text="Cara 1 — Teks Bebas"
+                                            Grid.Column="0"
+                                            Clicked="OnTab1Clicked"
+                                            BackgroundColor="Transparent"
+                                            TextColor="#4F46E5"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            CornerRadius="12"
+                                            HeightRequest="46"/>
+                                    <Button x:Name="BtnTab2"
+                                            Text="Cara 2 — Form Terarah"
+                                            Grid.Column="1"
+                                            Clicked="OnTab2Clicked"
+                                            BackgroundColor="Transparent"
+                                            TextColor="#94A3B8"
+                                            FontSize="14"
+                                            CornerRadius="12"
+                                            HeightRequest="46"/>
+                                </Grid>
+                            </Frame>
+
+                            <!-- TAB CONTENT: MODE 1 — TEKS BEBAS -->
+                            <VerticalStackLayout x:Name="TabContent1" Spacing="12">
+                                <Label Text="Tidak perlu format khusus. Tulis seperti konsultasi biasa, misalnya: Saya umur 70 tahun, punya darah tinggi, gula 230, sering merokok, jarang olahraga." TextColor="#64748B" FontSize="12"/>
+                                <Frame BackgroundColor="#F8FAFC" CornerRadius="16" Padding="0" BorderColor="#E2E8F0" HasShadow="False">
+                                    <Editor x:Name="EditorSymptoms"
+                                            Placeholder="Contoh: Saya 65 tahun, sering pusing, tekanan darah tinggi, gula darah 200, merokok, jarang olahraga..."
+                                            AutoSize="TextChanges"
+                                            HeightRequest="160"
+                                            BackgroundColor="Transparent"
+                                            TextColor="#0F172A"
+                                            Margin="8,4"/>
+                                </Frame>
+                                <Button Text="✦  Prediksi dari Teks Bebas"
+                                        Clicked="OnAnalyzeTextClicked"
+                                        BackgroundColor="#4F46E5"
+                                        TextColor="White"
+                                        CornerRadius="16"
+                                        HeightRequest="52"
+                                        FontAttributes="Bold"/>
+                                <Frame BackgroundColor="#EEF2FF" BorderColor="#C7D2FE" CornerRadius="12" Padding="12" HasShadow="False">
+                                    <Label Text="ℹ  AI akan memproses teks menggunakan Hybrid AI untuk memberikan prediksi risiko stroke." TextColor="#4F46E5" FontSize="12"/>
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <!-- TAB CONTENT: MODE 2 — FORM TERARAH -->
+                            <VerticalStackLayout x:Name="TabContent2" Spacing="12" IsVisible="False">
+                                <Label Text="Isi parameter utama agar Decision Tree membaca data lebih presisi." TextColor="#64748B" FontSize="12"/>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                    <Entry x:Name="EntryAge" Placeholder="Usia" Keyboard="Numeric" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+                                    <Picker x:Name="PickerGender" Grid.Column="1" Title="Jenis Kelamin" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+
+                                    <Picker x:Name="PickerHypertension" Grid.Row="1" Title="Hipertensi" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+                                    <Picker x:Name="PickerHeartDisease" Grid.Row="1" Grid.Column="1" Title="Penyakit Jantung" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+
+                                    <Entry x:Name="EntryGlucose" Grid.Row="2" Placeholder="Gula darah" Keyboard="Numeric" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+                                    <Entry x:Name="EntryBmi" Grid.Row="2" Grid.Column="1" Placeholder="BMI" Keyboard="Numeric" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+
+                                    <Picker x:Name="PickerSmoking" Grid.Row="3" Title="Merokok" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+                                    <Picker x:Name="PickerPreviousStroke" Grid.Row="3" Grid.Column="1" Title="Riwayat Stroke" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+
+                                    <Picker x:Name="PickerActivity" Grid.Row="4" Grid.ColumnSpan="2" Title="Aktivitas Fisik" BackgroundColor="#F8FAFC" TextColor="#0F172A"/>
+                                </Grid>
+
+                                <Button Text="✦  Prediksi dari Form"
+                                        Clicked="OnAnalyzeFormClicked"
+                                        BackgroundColor="#10B981"
+                                        TextColor="White"
+                                        CornerRadius="16"
+                                        HeightRequest="52"
+                                        FontAttributes="Bold"/>
+                                <Frame BackgroundColor="#F0FDF4" BorderColor="#BBF7D0" CornerRadius="12" Padding="12" HasShadow="False">
+                                    <Label Text="ℹ  Data form akan dianalisis menggunakan Decision Tree dan Neural Network untuk hasil lebih presisi." TextColor="#16A34A" FontSize="12"/>
+                                </Frame>
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- RESULT -->
+                    <Frame x:Name="ResultPanel" BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Hasil Prediksi" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="20">
+                                <Frame WidthRequest="116" HeightRequest="116" CornerRadius="58" Padding="0" BackgroundColor="#FEF2F2" BorderColor="#FCA5A5">
+                                    <Label x:Name="LabelScoreCircle" Text="0%" TextColor="#EF4444" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+                                <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                                    <Label x:Name="LabelPrediction" Text="Belum ada analisis." FontSize="18" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <ProgressBar x:Name="RiskProgress" Progress="0" HeightRequest="8"/>
+                                    <Label x:Name="LabelRecommendation" Text="Rekomendasi akan muncul setelah prediksi." TextColor="#64748B" FontSize="13"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- ADMIN HISTORY -->
+                    <Frame x:Name="AdminPanel" BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0" IsVisible="False">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <VerticalStackLayout>
+                                    <Label Text="Database Riwayat Screening" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="Daftar ringkas seluruh hasil screening yang tersimpan di perangkat. Admin bisa menghapus riwayat satu per satu atau semua data riwayat." TextColor="#64748B" FontSize="13"/>
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1"
+                                        Text="Hapus Semua Riwayat"
+                                        Clicked="OnClearHistoryClicked"
+                                        BackgroundColor="#FEE2E2"
+                                        TextColor="#EF4444"
+                                        CornerRadius="14"/>
+                            </Grid>
+                            <CollectionView x:Name="HistoryList" HeightRequest="430">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Margin="0,6" Padding="14" CornerRadius="16" BackgroundColor="#F8FAFC" BorderColor="#E2E8F0" HasShadow="False">
+                                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10">
+                                                <Label Text="{Binding User}" FontAttributes="Bold" TextColor="#0F172A"/>
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                                                    <Label Text="{Binding Score}" FontAttributes="Bold" TextColor="#EF4444" VerticalOptions="Center"/>
+                                                    <Button Text="Hapus"
+                                                            CommandParameter="{Binding RawKey}"
+                                                            Clicked="OnDeleteHistoryClicked"
+                                                            BackgroundColor="#FEE2E2"
+                                                            TextColor="#EF4444"
+                                                            FontSize="11"
+                                                            CornerRadius="10"
+                                                            Padding="10,4"/>
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout Grid.Row="1" Spacing="8">
+                                                    <Label Text="{Binding Mode}" BackgroundColor="#EEF2FF" TextColor="#4F46E5" Padding="8,3" FontSize="11"/>
+                                                    <Label Text="{Binding Detail}" TextColor="#64748B" FontSize="12"/>
+                                                </HorizontalStackLayout>
+                                            </Grid>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- ADMIN USER/FACE DATABASE -->
+                    <Frame x:Name="DatabasePanel" BackgroundColor="White" CornerRadius="24" Padding="22" BorderColor="#E2E8F0" IsVisible="False">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                <VerticalStackLayout>
+                                    <Label Text="DataBase Akun &amp; Foto Wajah" FontSize="20" FontAttributes="Bold" TextColor="#0F172A"/>
+                                    <Label Text="Menu khusus Admin untuk melihat akun terdaftar dan lokasi file foto face recognition." TextColor="#64748B" FontSize="13"/>
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1" Text="Lihat Folder Foto" Clicked="OnShowFaceFolderClicked" BackgroundColor="#EEF2FF" TextColor="#4F46E5" CornerRadius="14"/>
+                                <Button Grid.Column="2" Text="Refresh" Clicked="OnRefreshDatabaseClicked" BackgroundColor="#4F46E5" TextColor="White" CornerRadius="14"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                <Label Text="Total Akun:" TextColor="#64748B"/>
+                                <Label Grid.Column="1" x:Name="LabelTotalUsers" Text="0" FontAttributes="Bold" TextColor="#0F172A"/>
+                            </Grid>
+                            <Label x:Name="LabelFaceFolder" Text="Folder foto" TextColor="#64748B" FontSize="12" LineBreakMode="TailTruncation"/>
+
+                            <CollectionView x:Name="UserDatabaseList" HeightRequest="430">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Margin="0,6" Padding="14" CornerRadius="18" BackgroundColor="#F8FAFC" BorderColor="#E2E8F0" HasShadow="False">
+                                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                                <Label Text="{Binding Username}" FontAttributes="Bold" TextColor="#0F172A" FontSize="16"/>
+                                                <Label Grid.Column="1" Text="{Binding Role}" TextColor="#4F46E5" FontAttributes="Bold"/>
+                                                <Label Grid.Row="1" Text="{Binding Status}" TextColor="#10B981" FontSize="12"/>
+                                                <Label Grid.Row="2" Text="{Binding FacePath}" TextColor="#64748B" FontSize="11" LineBreakMode="TailTruncation"/>
+                                                <VerticalStackLayout Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Spacing="8">
+                                                    <Button Text="Reset Foto"
+                                                            CommandParameter="{Binding Username}"
+                                                            Clicked="OnResetSelectedFaceClicked"
+                                                            BackgroundColor="#FEF3C7"
+                                                            TextColor="#B45309"
+                                                            CornerRadius="12"/>
+                                                    <Button Text="Buat Embedding"
+                                                            CommandParameter="{Binding Username}"
+                                                            Clicked="OnCreateEmbeddingSelectedFaceClicked"
+                                                            IsVisible="{Binding CanCreateEmbedding}"
+                                                            BackgroundColor="#DBEAFE"
+                                                            TextColor="#1D4ED8"
+                                                            CornerRadius="12"/>
+                                                    <Button Text="Hapus Akun"
+                                                            CommandParameter="{Binding Username}"
+                                                            Clicked="OnDeleteSelectedUserClicked"
+                                                            IsVisible="{Binding CanDelete}"
+                                                            BackgroundColor="#FEE2E2"
+                                                            TextColor="#EF4444"
+                                                            CornerRadius="12"/>
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- FLOATING CHAT ICON -->
+            <Button x:Name="ChatFab"
+                    Text="🤖"
+                    FontSize="28"
+                    WidthRequest="74"
+                    HeightRequest="74"
+                    CornerRadius="37"
+                    BackgroundColor="#4F46E5"
+                    TextColor="White"
+                    Clicked="OnChatFabClicked"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="0,0,28,28"
+                    ZIndex="2"/>
+
+            <!-- CONNECTED POPUP CHAT -->
+            <Grid x:Name="ChatPopup"
+                  IsVisible="False"
+                  BackgroundColor="Transparent"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Fill"
+                  ZIndex="3">
+                <BoxView BackgroundColor="Transparent">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCloseChatBackdropTapped" />
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+
+                <Frame x:Name="ChatWindowFrame"
+                       WidthRequest="460"
+                       HeightRequest="620"
+                       Padding="0"
+                       BackgroundColor="White"
+                       BorderColor="#E2E8F0"
+                       CornerRadius="22"
+                       HasShadow="True"
+                       HorizontalOptions="End"
+                       VerticalOptions="End"
+                       Margin="0,0,28,28">
+                    <Grid x:Name="ChatWindowGrid" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="0">
+                        <Grid x:Name="ChatHeader" Grid.Row="0" Padding="16,14" BackgroundColor="White" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                            <Frame WidthRequest="40" HeightRequest="40" CornerRadius="20" Padding="0" HasShadow="False" BackgroundColor="#4F46E5" BorderColor="#4F46E5">
+                                <Label Text="AI" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontAttributes="Bold" FontSize="13"/>
+                            </Frame>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="NLP Assistant" TextColor="#0F172A" FontSize="16" FontAttributes="Bold"/>
+                                <HorizontalStackLayout Spacing="6">
+                                    <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="#22C55E" VerticalOptions="Center"/>
+                                    <Label Text="Gemini chat aktif" TextColor="#64748B" FontSize="11"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                            <Button x:Name="BtnMinimizeChat"
+                                    Grid.Column="2"
+                                    Text="_"
+                                    Clicked="OnMinimizeChatClicked"
+                                    BackgroundColor="#F1F5F9"
+                                    TextColor="#334155"
+                                    FontSize="16"
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    CornerRadius="17"
+                                    Padding="0"/>
+                            <Button Grid.Column="3"
+                                    Text="×"
+                                    Clicked="OnCloseChatClicked"
+                                    BackgroundColor="#FEE2E2"
+                                    TextColor="#DC2626"
+                                    FontSize="18"
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    CornerRadius="17"
+                                    Padding="0"/>
+                            <Grid.GestureRecognizers>
+                                <PanGestureRecognizer PanUpdated="OnChatHeaderPanUpdated"/>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <Grid x:Name="ChatBody" Grid.Row="1" Padding="18,18,18,8" RowDefinitions="Auto,Auto,*" RowSpacing="12">
+                            <Label Text="Halo! Saya AI Project Assistant berbasis Gemini API. Tanya tentang face login, stroke dini, sensor, LPF, LM358, HX711, BMI, atau topik umum lain." TextColor="#334155" FontSize="13"/>
+
+                            <VerticalStackLayout Grid.Row="1" Spacing="8">
+                                <Button x:Name="BtnSuggestionStroke" Text="Jelaskan project prediksi stroke dini" BackgroundColor="#EEF2FF" TextColor="#4F46E5" CornerRadius="12" FontSize="12" Clicked="OnChatSuggestionClicked"/>
+                                <Button x:Name="BtnSuggestionSensor" Text="Kenapa pulse sensor perlu LPF dan LM358?" BackgroundColor="#EEF2FF" TextColor="#4F46E5" CornerRadius="12" FontSize="12" Clicked="OnChatSuggestionClicked"/>
+                                <Button x:Name="BtnSuggestionFace" Text="Apa fungsi Haar Cascade dan LBPH?" BackgroundColor="#EEF2FF" TextColor="#4F46E5" CornerRadius="12" FontSize="12" Clicked="OnChatSuggestionClicked"/>
+                            </VerticalStackLayout>
+
+                            <Frame Grid.Row="2" BackgroundColor="White" CornerRadius="0" Padding="0" BorderColor="Transparent" HasShadow="False">
+                                <ScrollView x:Name="ChatAnswerScroll" Padding="2,6">
+                                    <VerticalStackLayout x:Name="ChatMessages"
+                                                         Spacing="10"/>
+                                </ScrollView>
+                            </Frame>
+                        </Grid>
+
+                        <Grid x:Name="ChatInputBar" Grid.Row="2" Padding="14,10,14,12" ColumnDefinitions="*,Auto" ColumnSpacing="10" BackgroundColor="White">
+                            <Frame BackgroundColor="#F1F5F9" CornerRadius="24" Padding="14,4" BorderColor="#E2E8F0" HasShadow="False">
+                                <Editor x:Name="EntryChat"
+                                        Placeholder="Write something..."
+                                        AutoSize="TextChanges"
+                                        HeightRequest="42"
+                                        MaximumHeightRequest="96"
+                                        BackgroundColor="Transparent"
+                                        TextColor="#0F172A"
+                                        FontSize="13"/>
+                            </Frame>
+                            <Button x:Name="BtnSendChat"
+                                    Grid.Column="1"
+                                    Text="➤"
+                                    Clicked="OnSendChatClicked"
+                                    BackgroundColor="#4F46E5"
+                                    TextColor="White"
+                                    CornerRadius="23"
+                                    WidthRequest="46"
+                                    HeightRequest="46"
+                                    VerticalOptions="End"/>
+                        </Grid>
+                        <Grid Grid.Row="3" HeightRequest="18" BackgroundColor="White">
+                            <Label Text="◢"
+                                   TextColor="#94A3B8"
+                                   FontSize="18"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"
+                                   Margin="0,0,10,0">
+                                <Label.GestureRecognizers>
+                                    <PanGestureRecognizer PanUpdated="OnChatResizePanUpdated"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
